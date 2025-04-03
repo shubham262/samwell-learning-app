@@ -74,7 +74,7 @@ const TestContent = () => {
     score: 0,
     scorePercentage: 0,
     unmarkedQuestions: 0,
-    handleReviewAnswers: false,
+    reviewAnswers: false,
     usedTime: {
       hours: "00",
       minutes: "00",
