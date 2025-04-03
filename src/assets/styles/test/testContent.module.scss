@@ -35,4 +35,130 @@
       }
     }
   }
+
+  .questionParentContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 40px;
+    margin: 48px 0px;
+    overflow-y: auto;
+    .questionContainer {
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      background-color: #fff;
+
+      min-width: 90%;
+      border-radius: 16px;
+      .questionNumber {
+        color: #666;
+        font-size: 14px;
+        font-weight: 500;
+        margin-bottom: 8px;
+      }
+
+      .questionText {
+        font-size: 20px;
+        font-weight: 600;
+        color: #000;
+        margin-bottom: 24px;
+      }
+
+      .optionsContainer {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+        margin-bottom: 24px;
+
+        .optionItem {
+          display: flex;
+          align-items: center;
+          gap: 12px;
+          padding: 16px 20px;
+          border: 1px solid #e0e0e0;
+          border-radius: 16px;
+          cursor: pointer;
+          background: #fff;
+          transition: all 0.2s ease;
+          min-height: 56px;
+
+          &:hover {
+            border-color: #2a76f6;
+          }
+
+          &.selected {
+            border-color: #2a76f6;
+            background-color: #fff;
+          }
+
+          .radioContainer {
+            width: 20px;
+            height: 20px;
+            position: relative;
+
+            input[type="radio"] {
+              opacity: 0;
+              position: absolute;
+              width: 100%;
+              height: 100%;
+              margin: 0;
+              cursor: pointer;
+            }
+
+            .radioCustom {
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 20px;
+              height: 20px;
+              border: 2px solid #e0e0e0;
+              border-radius: 50%;
+              transition: all 0.2s ease;
+
+              &::after {
+                content: "";
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: #2a76f6;
+                opacity: 0;
+                transition: all 0.2s ease;
+              }
+            }
+
+            input[type="radio"]:checked + .radioCustom {
+              border-color: #2a76f6;
+              &::after {
+                opacity: 1;
+              }
+            }
+          }
+
+          span {
+            font-size: 16px;
+            color: #333;
+          }
+        }
+      }
+
+      .dontKnowButton {
+        align-self: flex-start;
+        color: #2a76f6;
+        background: none;
+        border: none;
+        font-size: 14px;
+        cursor: pointer;
+        padding: 0;
+
+        &:hover {
+          text-decoration: underline;
+        }
+      }
+    }
+  }
 }
