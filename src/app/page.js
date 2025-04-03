@@ -56,7 +56,7 @@ const Home = () => {
             />
             <button
               className={styles.startButton}
-              onClick={handleNavigateToTest}
+              onClick={() => handleNavigateToTest(null, true)}
             >
               Start Studying
             </button>
