@@ -1,9 +1,11 @@
 "use client";
-import { memo, useState, useCallback } from "react";
+import { memo, useState, useCallback, useEffect } from "react";
 import styles from "../../../assets/styles/test/testContent.module.scss";
 import bullseye from "../../../assets/icons/bullseye.png";
 import user from "../../../assets/icons/user.png";
 import Image from "next/image";
+import hourglass from "../../../assets/svg/test/hourglass.svg";
+import questionMark from "../../../assets/svg/test/questionMark.svg";
 
 const questionData = [
   {
@@ -65,6 +67,11 @@ const TestContent = () => {
     activeStage: "stage1", //stage1,stage2
   });
 
+  const [timer, setTimer] = useState({
+    minutes: 15,
+    seconds: 0,
+  });
+
   const handleOptionSelect = useCallback((selectedOptiondata, questionInfo) => {
     setInfo((prev) => ({
       ...prev,
@@ -74,6 +81,37 @@ const TestContent = () => {
       },
     }));
   }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimer((prev) => {
+        if (prev.minutes === 0 && prev.seconds === 0) {
+          clearInterval(interval);
+          // Handle timer completion (e.g., auto-submit)
+          return prev;
+        }
+
+        if (prev.seconds === 0) {
+          return {
+            minutes: prev.minutes - 1,
+            seconds: 59,
+          };
+        }
+
+        return {
+          ...prev,
+          seconds: prev.seconds - 1,
+        };
+      });
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleFinishTest = () => {
+    // Handle test submission
+    console.log("Test finished", info.answers);
+  };
 
   return (
     <div className={styles.testContentParentContainer}>
@@ -85,7 +123,19 @@ const TestContent = () => {
             Biology - chapter 22: Evolution
           </span>
         </div>
-        <Image src={user} alt="user" />
+      </div>
+      <div className={styles.timeDetailsContainer}>
+        <div className={styles.timerContainer}>
+          <Image src={hourglass} /> Time left:
+          <div className={styles.timer}>
+            <span>{String(timer.minutes).padStart(2, "0")}</span>
+            <span>:</span>
+            <span>{String(timer.seconds).padStart(2, "0")}</span>
+          </div>
+        </div>
+        <button onClick={handleFinishTest} className={styles.finishButton}>
+          Finish Test
+        </button>
       </div>
       <Stage1 info={info} handleOptionSelect={handleOptionSelect} />
     </div>
@@ -100,7 +150,8 @@ const Stage1 = ({ info, handleOptionSelect }) => {
       {info?.questions?.map((ele, index) => (
         <div className={styles.questionContainer} key={ele.id}>
           <span className={styles.questionNumber}>
-            Question {index + 1} of {info?.questions?.length}
+            <Image src={questionMark} /> Question {index + 1} of{" "}
+            {info?.questions?.length}
           </span>
           <h2 className={styles.questionText}>{ele?.question || ""}</h2>
 
