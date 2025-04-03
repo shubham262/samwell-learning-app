@@ -226,4 +226,203 @@
       }
     }
   }
+
+  .stage2ParentContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 32px;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+
+    .breadcrumb {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 32px;
+      color: #45505e;
+      font-size: 14px;
+
+      .separator {
+        color: #666;
+      }
+    }
+
+    .headerText {
+      color: #45505e;
+      margin-bottom: 40px;
+      font-family: Inter;
+      font-weight: 600;
+      font-size: 32px;
+      line-height: 100%;
+      letter-spacing: 0%;
+    }
+
+    .contentGrid {
+      display: grid;
+      grid-template-columns: 2fr 2fr 3fr;
+      gap: 24px;
+      margin-bottom: 32px;
+
+      .section {
+        background: white;
+        border-radius: 16px;
+        padding: 24px;
+
+        .sectionTitle {
+          color: #45505e;
+
+          margin-bottom: 16px;
+          font-family: Inter;
+          font-weight: 700;
+          font-size: 20px;
+          line-height: 24px;
+          letter-spacing: -1.5%;
+          vertical-align: middle;
+          text-transform: capitalize;
+        }
+
+        .score {
+          color: #45505e;
+          margin-bottom: 24px;
+
+          font-family: Inter;
+          font-weight: 500;
+          font-size: 40px;
+          line-height: 100%;
+          letter-spacing: -1.55px;
+        }
+
+        .timeDisplay {
+          display: flex;
+          gap: 8px;
+          align-items: center;
+          //   background: #212427;
+          padding: 8px 16px;
+          border-radius: 8px;
+          width: fit-content;
+
+          .timeUnit {
+            color: white;
+            padding: 12px;
+            border-radius: 8px;
+            background-color: #45505e;
+            font-family: Inter;
+            font-weight: 700;
+            font-size: 20px;
+            line-height: 24px;
+            letter-spacing: -1.5%;
+            text-transform: capitalize;
+          }
+
+          .separator {
+            color: #45505e;
+            font-family: Inter;
+            font-weight: 600;
+            font-size: 21.45px;
+            line-height: 100%;
+            letter-spacing: 0%;
+          }
+        }
+
+        .questionLinks {
+          display: flex;
+          gap: 16px;
+          margin-top: 16px;
+
+          .questionLink {
+            color: #2a76f6;
+            font-size: 14px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            &:hover {
+              text-decoration: underline;
+            }
+          }
+        }
+      }
+    }
+
+    .rightSection {
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
+
+      .actionLink {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        text-decoration: none;
+        color: #212427;
+        padding: 16px;
+        background: white;
+        border-radius: 12px;
+
+        .linkContent {
+          display: flex;
+          flex-direction: column;
+          gap: 4px;
+
+          .linkTitle {
+            font-weight: 500;
+            font-size: 16px;
+          }
+
+          .linkDescription {
+            color: #666;
+            font-size: 14px;
+          }
+        }
+
+        .warningBadge {
+          display: flex;
+          align-items: center;
+          gap: 8px;
+          color: #ff5722;
+          font-size: 14px;
+          padding: 4px 8px;
+          border-radius: 4px;
+          background: #fff3f0;
+        }
+      }
+    }
+
+    .buttonContainer {
+      display: flex;
+      justify-content: flex-end;
+      gap: 16px;
+      margin-top: 32px;
+
+      button {
+        padding: 12px 24px;
+        border-radius: 24px;
+        font-size: 14px;
+        font-weight: 500;
+        cursor: pointer;
+
+        &.cancelButton {
+          background: none;
+          border: none;
+          color: #666;
+
+          &:hover {
+            color: #212427;
+          }
+        }
+
+        &.completeButton {
+          background: #2a76f6;
+          color: white;
+          border: none;
+
+          &:hover {
+            background: #1b4b9b;
+          }
+        }
+      }
+    }
+  }
 }

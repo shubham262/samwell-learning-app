@@ -6,6 +6,9 @@ import user from "../../../assets/icons/user.png";
 import Image from "next/image";
 import hourglass from "../../../assets/svg/test/hourglass.svg";
 import questionMark from "../../../assets/svg/test/questionMark.svg";
+// import { IoWarningOutline } from "react-icons/io5";
+// import { IoTimeOutline } from "react-icons/io5";
+// import { IoChevronForward } from "react-icons/io5";
 
 const questionData = [
   {
@@ -204,5 +207,79 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
 };
 
 const Stage2 = () => {
-  return <div className="stage2ParentContainer">Stg2</div>;
+  const stats = {
+    score: 40,
+    correct: 4,
+    incorrect: 6,
+    avgTime: "4 mins",
+    longestQuestions: ["Q. 6", "Q. 8"],
+    timeCompleted: {
+      hours: "00",
+      minutes: "18",
+      seconds: "54",
+    },
+  };
+
+  return (
+    <div className={styles.stage2ParentContainer}>
+      {/* <div className={styles.breadcrumb}>
+        <span>Module 3</span>
+        <span className={styles.separator}>›</span>
+        <span>Cinematic Context</span>
+        <span className={styles.separator}>›</span>
+        <span>Final Quiz</span>
+      </div> */}
+
+      <h1 className={styles.headerText}>Don't worry, you'll bounce back!</h1>
+
+      <div className={styles.contentGrid}>
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Quiz Score</h2>
+          <div className={styles.score}>{stats.score}%</div>
+        </div>
+
+        <div className={styles.section}>
+          <h2 className={styles.sectionTitle}>Time Completed</h2>
+          <div className={styles.timeDisplay}>
+            <span className={styles.timeUnit}>{stats.timeCompleted.hours}</span>
+            <span className={styles.separator}>:</span>
+            <span className={styles.timeUnit}>
+              {stats.timeCompleted.minutes}
+            </span>
+            <span className={styles.separator}>:</span>
+            <span className={styles.timeUnit}>
+              {stats.timeCompleted.seconds}
+            </span>
+          </div>
+        </div>
+
+        <div className={styles.rightSection}>
+          <a href="#" className={styles.actionLink}>
+            <div className={styles.linkContent}>
+              <span className={styles.linkTitle}>Try Again</span>
+              <span className={styles.linkDescription}>
+                Retake the test to improve your score.
+              </span>
+            </div>
+            <span>›</span>
+          </a>
+
+          <a href="#" className={styles.actionLink}>
+            <div className={styles.linkContent}>
+              <span className={styles.linkTitle}>Review your answer</span>
+              <span className={styles.linkDescription}>
+                Go over your answers and get instant AI feedback.
+              </span>
+            </div>
+            <div className={styles.warningBadge}>6 Missed item</div>
+          </a>
+        </div>
+      </div>
+
+      <div className={styles.buttonContainer}>
+        <button className={styles.cancelButton}>Cancel</button>
+        <button className={styles.completeButton}>complete</button>
+      </div>
+    </div>
+  );
 };
