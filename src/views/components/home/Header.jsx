@@ -1,6 +1,6 @@
 import { memo } from "react";
-import styles from "@/assets/styles/header.module.scss";
-import logo from "@/assets/svg/samwell.svg";
+import styles from "@/assets/styles/home/header.module.scss";
+import logo from "@/assets/svg/home/samwell.svg";
 import Image from "next/image";
 const Header = () => {
   return (

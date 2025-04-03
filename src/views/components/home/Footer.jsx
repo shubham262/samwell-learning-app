@@ -1,5 +1,5 @@
 import { memo } from "react";
-import styles from "@/assets/styles/footer.module.scss";
+import styles from "@/assets/styles/home/footer.module.scss";
 import kings from "../../../assets/icons/kings.png";
 import london from "../../../assets/icons/london.png";
 import toronto from "../../../assets/icons/toronto.png";
