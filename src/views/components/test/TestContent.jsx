@@ -74,7 +74,7 @@ const TestContent = () => {
     score: 0,
     scorePercentage: 0,
     unmarkedQuestions: 0,
-    reviewQuestions: false,
+    handleReviewAnswers: false,
     usedTime: {
       hours: "00",
       minutes: "00",
@@ -128,7 +128,6 @@ const TestContent = () => {
   const handleFinishTest = useCallback((timeDetails) => {
     // Calculate used time
 
-    console.log("timeDetails", timeDetails);
     const initialTimeInSeconds = 15 * 60; // 15 minutes in seconds
     const remainingTimeInSeconds =
       timeDetails.minutes * 60 + timeDetails.seconds;
@@ -167,6 +166,13 @@ const TestContent = () => {
     }));
   }, [info]);
 
+  const handleReviewAnswers = useCallback(() => {
+    setInfo((prev) => ({
+      ...prev,
+      reviewAnswers: true,
+    }));
+  }, [info]);
+
   const stageMapper = useMemo(() => {
     return {
       stage1: (
@@ -176,9 +182,21 @@ const TestContent = () => {
           handleFinishTest={handleFinishTest}
         />
       ),
-      stage2: <Stage2 info={info} handleTryAgain={tryAgain} />,
+      stage2: (
+        <Stage2
+          info={info}
+          handleTryAgain={tryAgain}
+          handleReviewAnswers={handleReviewAnswers}
+        />
+      ),
     };
-  }, [info, handleFinishTest, handleOptionSelect, tryAgain]);
+  }, [
+    info,
+    handleFinishTest,
+    handleOptionSelect,
+    tryAgain,
+    handleReviewAnswers,
+  ]);
 
   return (
     <div className={styles.testContentParentContainer}>
@@ -294,7 +312,7 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
   );
 };
 
-const Stage2 = ({ info, handleTryAgain }) => {
+const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
   const stats = {
     score: 40,
     correct: 4,
@@ -350,7 +368,7 @@ const Stage2 = ({ info, handleTryAgain }) => {
             {/* <span>›</span> */}
           </div>
 
-          <div className={styles.actionLink}>
+          <div className={styles.actionLink} onClick={handleReviewAnswers}>
             <div className={styles.linkContent}>
               <div className={styles.warningBadge}>
                 {info?.unmarkedQuestions} Missed item
