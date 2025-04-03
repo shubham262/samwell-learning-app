@@ -1,11 +1,12 @@
 "use client";
 import Image from "next/image";
 import styles from "../assets/styles/home/home.module.scss";
-import { memo, useState, useCallback } from "react";
+import { memo, useState, useCallback, useContext } from "react";
 import Header from "@/views/components/home/Header";
 import Footer from "@/views/components/home/Footer";
 import book from "../assets/svg/home/book.svg";
 import samWell from "@/assets/icons/container.png";
+import Context from "@/context/context";
 const Home = () => {
   const [info, setInfo] = useState({
     userQuery: "",
