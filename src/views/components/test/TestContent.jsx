@@ -16,7 +16,7 @@ const data = [
   { name: "Group C", value: 300 },
   { name: "Group D", value: 200 },
 ];
-const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
+const COLORS = ["#4CAF50", "#FF5722", "#FFC107"];
 
 const TestContent = () => {
   const [info, setInfo] = useState({
@@ -418,11 +418,32 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
                 ))}
               </Pie>
             </PieChart>
-            <span>hello</span>
+            <div className={styles.statsContainer}>
+              <div className={styles.statItem}>
+                <span className={`${styles.label} ${styles.correct}`}>
+                  Correct
+                </span>
+                <div className={styles.value}>{correctAnswers}</div>
+              </div>
+              <div className={styles.statItem}>
+                <span className={`${styles.label} ${styles.incorrect}`}>
+                  Incorrect
+                </span>
+                <div className={styles.value}>{incorrectAnswers}</div>
+              </div>
+              <div className={styles.statItem}>
+                <span className={`${styles.label} ${styles.unmarked}`}>
+                  Unmarked
+                </span>
+                <div className={styles.value}>
+                  {info?.unmarkedQuestions || 0}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className={styles.section}>
+        <div className={`${styles.section} ${styles.timeSection}`}>
           <h2 className={styles.sectionTitle}>Time Completed</h2>
           <div className={styles.timeDisplay}>
             <span className={styles.timeUnit}>{info?.usedTime?.hours}</span>
@@ -443,10 +464,13 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
                 Retake the test to improve your score.
               </span>
             </div>
-            {/* <span>›</span> */}
           </div>
 
-          <div className={styles.actionLink} onClick={handleReviewAnswers}>
+          <div
+            className={styles.actionLink}
+            onClick={handleReviewAnswers}
+            style={{ flex: 1 }}
+          >
             <div className={styles.linkContent}>
               <div className={styles.warningBadge}>
                 {info?.unmarkedQuestions} Missed item

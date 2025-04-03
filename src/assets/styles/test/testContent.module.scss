@@ -487,6 +487,13 @@
         //   }
         // }
       }
+
+      .timeSection {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+      }
     }
 
     .rightSection {
@@ -585,6 +592,56 @@
           &:hover {
             background: #1b4b9b;
           }
+        }
+      }
+    }
+  }
+
+  .chatContainer {
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    margin-top: 16px;
+
+    .statsContainer {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+
+      .statItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 32px;
+
+        .label {
+          font-size: 16px;
+          font-weight: 500;
+
+          &.correct {
+            color: #4caf50;
+          }
+
+          &.incorrect {
+            color: #ff5722;
+          }
+
+          &.unmarked {
+            color: #ffc107;
+          }
+        }
+
+        .value {
+          background: #f5f5f5;
+          width: 32px;
+          height: 32px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 14px;
+          color: #212427;
+          font-weight: 500;
         }
       }
     }
