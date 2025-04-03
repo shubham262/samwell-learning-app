@@ -52,17 +52,26 @@
       min-width: 90%;
       border-radius: 16px;
       .questionNumber {
-        color: #666;
-        font-size: 14px;
-        font-weight: 500;
-        margin-bottom: 8px;
+        color: #45505e;
+
+        margin-bottom: 24px;
+
+        font-family: Inter;
+        font-weight: 600;
+        font-size: 12px;
+        line-height: 15px;
+        letter-spacing: 0%;
       }
 
       .questionText {
-        font-size: 20px;
-        font-weight: 600;
-        color: #000;
+        color: #212427;
         margin-bottom: 24px;
+        font-family: Inter;
+        font-weight: 700;
+        font-size: 18px;
+        line-height: 24px;
+        letter-spacing: -1.5%;
+        text-transform: capitalize;
       }
 
       .optionsContainer {
@@ -141,13 +150,21 @@
 
           span {
             font-size: 16px;
-            color: #333;
+            color: #212427;
+
+            font-family: Inter;
+            font-weight: 400;
+            font-size: 14px;
+            leading-trim: Cap height;
+            line-height: 26px;
+            letter-spacing: -1%;
+            vertical-align: middle;
           }
         }
       }
 
       .dontKnowButton {
-        align-self: flex-start;
+        // align-self: flex-start;
         color: #2a76f6;
         background: none;
         border: none;

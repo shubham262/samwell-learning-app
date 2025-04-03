@@ -62,6 +62,7 @@ const TestContent = () => {
   const [info, setInfo] = useState({
     answers: {},
     questions: questionData || [],
+    activeStage: "stage1", //stage1,stage2
   });
 
   const handleOptionSelect = useCallback((selectedOptiondata, questionInfo) => {
@@ -73,8 +74,6 @@ const TestContent = () => {
       },
     }));
   }, []);
-
-  console.log("answers", info?.answers);
 
   return (
     <div className={styles.testContentParentContainer}>
@@ -88,49 +87,51 @@ const TestContent = () => {
         </div>
         <Image src={user} alt="user" />
       </div>
-
-      {/* question content */}
-      <div className={styles.questionParentContainer}>
-        {info?.questions?.map((ele, index) => (
-          <div className={styles.questionContainer} key={ele.id}>
-            <span className={styles.questionNumber}>
-              Question {index + 1} of {info?.questions?.length}
-            </span>
-            <h2 className={styles.questionText}>{ele?.question || ""}</h2>
-
-            <div className={styles.optionsContainer}>
-              {ele?.options?.map((option) => (
-                <label
-                  key={option.id}
-                  className={`${styles.optionItem} ${
-                    info?.answers?.[ele?.id] === option.id
-                      ? styles.selected
-                      : ""
-                  }`}
-                >
-                  <div className={styles.radioContainer}>
-                    <input
-                      type="radio"
-                      name={`question_${ele.id}`}
-                      value={option.id}
-                      checked={info?.answers?.[ele?.id] === option.id}
-                      onChange={() => handleOptionSelect(option.id, ele)}
-                    />
-                    <div className={styles.radioCustom} />
-                  </div>
-                  <span>
-                    {option.id}) {option.text}
-                  </span>
-                </label>
-              ))}
-            </div>
-
-            <button className={styles.dontKnowButton}>Don't know?</button>
-          </div>
-        ))}
-      </div>
+      <Stage1 info={info} handleOptionSelect={handleOptionSelect} />
     </div>
   );
 };
 
 export default memo(TestContent);
+
+const Stage1 = ({ info, handleOptionSelect }) => {
+  return (
+    <div className={styles.questionParentContainer}>
+      {info?.questions?.map((ele, index) => (
+        <div className={styles.questionContainer} key={ele.id}>
+          <span className={styles.questionNumber}>
+            Question {index + 1} of {info?.questions?.length}
+          </span>
+          <h2 className={styles.questionText}>{ele?.question || ""}</h2>
+
+          <div className={styles.optionsContainer}>
+            {ele?.options?.map((option) => (
+              <label
+                key={option.id}
+                className={`${styles.optionItem} ${
+                  info?.answers?.[ele?.id] === option.id ? styles.selected : ""
+                }`}
+              >
+                <div className={styles.radioContainer}>
+                  <input
+                    type="radio"
+                    name={`question_${ele.id}`}
+                    value={option.id}
+                    checked={info?.answers?.[ele?.id] === option.id}
+                    onChange={() => handleOptionSelect(option.id, ele)}
+                  />
+                  <div className={styles.radioCustom} />
+                </div>
+                <span>
+                  {option.id}) {option.text}
+                </span>
+              </label>
+            ))}
+          </div>
+
+          <button className={styles.dontKnowButton}>Don't know?</button>
+        </div>
+      ))}
+    </div>
+  );
+};
