@@ -7,7 +7,22 @@ import Footer from "@/views/components/home/Footer";
 import book from "../assets/svg/home/book.svg";
 import samWell from "@/assets/icons/container.png";
 import Context from "@/context/context";
+import { useRouter } from "next/navigation";
 const Home = () => {
+  const router = useRouter();
+
+  const handleNavigateToTest = useCallback(
+    (e, click = false) => {
+      if (e?.key === "Enter" || click) {
+        if (e?.shiftKey) {
+          return;
+        }
+        router.push("/test");
+      }
+    },
+    [router]
+  );
+
   const [info, setInfo] = useState({
     userQuery: "",
   });
@@ -37,8 +52,14 @@ const Home = () => {
               placeholder="Type what you want to study..."
               onChange={onQueryChange}
               value={info.userQuery}
+              onKeyDown={handleNavigateToTest}
             />
-            <button className={styles.startButton}>Start Studying</button>
+            <button
+              className={styles.startButton}
+              onClick={handleNavigateToTest}
+            >
+              Start Studying
+            </button>
           </div>
         </div>
       </div>

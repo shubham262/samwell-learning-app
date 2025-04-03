@@ -8,6 +8,7 @@ import hourglass from "../../../assets/svg/test/hourglass.svg";
 import questionMark from "../../../assets/svg/test/questionMark.svg";
 import rightArrow from "../../../assets/svg/test/right-arrow.svg";
 import questionData from "../../../constants/data";
+import { useRouter } from "next/navigation";
 
 const TestContent = () => {
   const [info, setInfo] = useState({
@@ -344,6 +345,12 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
 };
 
 const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
+  const router = useRouter();
+
+  const handleComplete = useCallback(() => {
+    router.push("/");
+  }, [router]);
+
   const stats = {
     score: 40,
     correct: 4,
@@ -416,8 +423,9 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
       </div>
 
       <div className={styles.buttonContainer}>
-        <button className={styles.cancelButton}>Cancel</button>
-        <button className={styles.completeButton}>complete</button>
+        <button className={styles.completeButton} onClick={handleComplete}>
+          complete
+        </button>
       </div>
     </div>
   );
