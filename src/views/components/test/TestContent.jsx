@@ -21,7 +21,7 @@ import Context from "@/context/context";
 
 const TestContent = () => {
   const {
-    tutorInfo: { questionsData },
+    tutorInfo: { questionsData, userQuery },
   } = useContext(Context);
   const [info, setInfo] = useState({
     answers: {},
@@ -38,9 +38,6 @@ const TestContent = () => {
       seconds: "00",
     },
   });
-  // useEffect(() => {
-  //   setInfo((prev) => ({ ...prev, answers }));
-  // }, []);
 
   useEffect(() => {
     if (questionsData) {
@@ -175,7 +172,7 @@ const TestContent = () => {
         <div className={styles.testHeaderContentContainer}>
           <Image src={bullseye} alt="target" />
           <span className={styles.testHeadertextStyling}>
-            Biology - chapter 22: Evolution
+            {userQuery || ""}
           </span>
         </div>
       </div>
@@ -390,7 +387,11 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
 
   return (
     <div className={styles.stage2ParentContainer}>
-      <h1 className={styles.headerText}>Don't worry, you'll bounce back!</h1>
+      <h1 className={styles.headerText}>
+        {info?.scorePercentage > 50
+          ? "Great!, you have done well"
+          : "Don t worry, you'll bounce back!"}
+      </h1>
 
       <div className={styles.contentGrid}>
         <div className={styles.section}>
