@@ -19,6 +19,7 @@ const TestContent = () => {
     scorePercentage: 0,
     unmarkedQuestions: 0,
     reviewAnswers: false,
+    wrongAnswers: 0,
     usedTime: {
       hours: "00",
       minutes: "00",
@@ -38,6 +39,7 @@ const TestContent = () => {
       let currentScore = 0;
       let unmarkedQuestions = 0;
       let scorePercentage = 0;
+      let wrongAnswers = 0;
       const answers = info?.answers || {};
       for (let i = 0; i < questionData?.length; i++) {
         if (
@@ -48,6 +50,12 @@ const TestContent = () => {
         if (!answers?.[questionData?.[i]?.id]) {
           unmarkedQuestions++;
         }
+
+        if (
+          questionData?.[i]?.correctOption !== answers?.[questionData?.[i]?.id]
+        ) {
+          wrongAnswers++;
+        }
       }
       scorePercentage = (currentScore / questionData?.length) * 100;
       setInfo((prev) => ({
@@ -55,6 +63,7 @@ const TestContent = () => {
         score: currentScore,
         scorePercentage,
         unmarkedQuestions,
+        wrongAnswers,
       }));
     }
   }, [info?.activeStage]);
@@ -110,6 +119,7 @@ const TestContent = () => {
       score: 0,
       scorePercentage: 0,
       unmarkedQuestions: 0,
+      wrongAnswers: 0,
     }));
   }, [info]);
 
