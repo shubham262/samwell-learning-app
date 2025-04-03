@@ -1,0 +1,25 @@
+.homePageContainer {
+  background-color: #fff;
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .homePageContent {
+    display: flex;
+    flex: 1;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+
+    .supprtingText {
+      font-family: Inter;
+      font-weight: 300;
+      font-size: 20px;
+      line-height: 32px;
+      letter-spacing: 0%;
+      text-align: center;
+      color: #45505e;
+    }
+  }
+}
