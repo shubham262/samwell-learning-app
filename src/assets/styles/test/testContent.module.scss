@@ -149,6 +149,75 @@
             background-color: #fff;
           }
 
+          &.correct {
+            border-color: #4caf50;
+            background-color: #f1fbf2;
+
+            .radioCustom {
+              border-color: #4caf50 !important;
+              &::after {
+                background: #4caf50 !important;
+                opacity: 1;
+              }
+            }
+
+            span {
+              color: #4caf50;
+            }
+          }
+
+          &.incorrect {
+            border-color: #ff5722;
+            background-color: #fff3f0;
+
+            .radioCustom {
+              border-color: #ff5722 !important;
+              &::after {
+                background: #ff5722 !important;
+                opacity: 1;
+              }
+            }
+
+            span {
+              color: #ff5722;
+            }
+          }
+
+          &.unmarked {
+            border-color: #ffc107;
+            background-color: #fffbeb;
+
+            .radioCustom {
+              border-color: #ffc107 !important;
+            }
+
+            span {
+              color: #ffc107;
+            }
+          }
+
+          &.disabled {
+            pointer-events: none;
+          }
+
+          .answerStatus {
+            margin-left: auto;
+            font-size: 12px;
+            font-weight: 500;
+
+            &.correct {
+              color: #4caf50;
+            }
+
+            &.incorrect {
+              color: #ff5722;
+            }
+
+            &.unmarked {
+              color: #ffc107;
+            }
+          }
+
           .radioContainer {
             width: 20px;
             height: 20px;

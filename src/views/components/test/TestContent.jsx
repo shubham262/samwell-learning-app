@@ -125,31 +125,34 @@ const TestContent = () => {
     }));
   }, []);
 
-  const handleFinishTest = useCallback((timeDetails) => {
-    // Calculate used time
+  const handleFinishTest = useCallback(
+    (timeDetails) => {
+      // Calculate used time
 
-    const initialTimeInSeconds = 15 * 60; // 15 minutes in seconds
-    const remainingTimeInSeconds =
-      timeDetails.minutes * 60 + timeDetails.seconds;
-    const usedTimeInSeconds = initialTimeInSeconds - remainingTimeInSeconds;
+      const initialTimeInSeconds = 15 * 60; // 15 minutes in seconds
+      const remainingTimeInSeconds =
+        timeDetails.minutes * 60 + timeDetails.seconds;
+      const usedTimeInSeconds = initialTimeInSeconds - remainingTimeInSeconds;
 
-    // Convert used time to hours, minutes, seconds
-    const hours = Math.floor(usedTimeInSeconds / 3600);
-    const minutes = Math.floor((usedTimeInSeconds % 3600) / 60);
-    const seconds = usedTimeInSeconds % 60;
+      // Convert used time to hours, minutes, seconds
+      const hours = Math.floor(usedTimeInSeconds / 3600);
+      const minutes = Math.floor((usedTimeInSeconds % 3600) / 60);
+      const seconds = usedTimeInSeconds % 60;
 
-    const usedTime = {
-      hours: String(hours).padStart(2, "0"),
-      minutes: String(minutes).padStart(2, "0"),
-      seconds: String(seconds).padStart(2, "0"),
-    };
+      const usedTime = {
+        hours: String(hours).padStart(2, "0"),
+        minutes: String(minutes).padStart(2, "0"),
+        seconds: String(seconds).padStart(2, "0"),
+      };
 
-    setInfo((prev) => ({
-      ...prev,
-      activeStage: "stage2",
-      usedTime,
-    }));
-  }, []);
+      setInfo((prev) => ({
+        ...prev,
+        activeStage: "stage2",
+        usedTime: prev.reviewAnswers ? prev.usedTime : usedTime,
+      }));
+    },
+    [info]
+  );
 
   const tryAgain = useCallback(() => {
     let answers = {};
@@ -170,6 +173,7 @@ const TestContent = () => {
     setInfo((prev) => ({
       ...prev,
       reviewAnswers: true,
+      activeStage: "stage1",
     }));
   }, [info]);
 
@@ -219,15 +223,16 @@ export default memo(TestContent);
 
 const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
   const [timer, setTimer] = useState({
-    minutes: 1,
+    minutes: 15,
     seconds: 0,
   });
 
   const handleFinitTestClick = useCallback(() => {
     handleFinishTest(timer);
-  }, [handleFinishTest]);
+  }, [handleFinishTest, timer]);
 
   useEffect(() => {
+    if (info?.reviewAnswers) return;
     const interval = setInterval(() => {
       setTimer((prev) => {
         if (prev.minutes === 0 && prev.seconds === 0) {
@@ -253,20 +258,90 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
 
     return () => clearInterval(interval);
   }, []);
+
+  const getOptionStatus = useCallback(
+    (question, optionId) => {
+      if (!info?.reviewAnswers) return "";
+
+      const userAnswer = info?.answers?.[question.id];
+      const correctAnswer = question.correctOption;
+
+      if (!userAnswer) {
+        return "unmarked";
+      }
+
+      if (optionId === correctAnswer) {
+        return "correct";
+      }
+
+      if (optionId === userAnswer) {
+        return "incorrect";
+      }
+
+      return "";
+    },
+    [info?.reviewAnswers, info?.answers]
+  );
+
+  const getAnswerStatusText = useCallback(
+    (question, optionId) => {
+      if (!info?.reviewAnswers) return null;
+
+      const userAnswer = info?.answers?.[question.id];
+      const correctAnswer = question.correctOption;
+
+      if (optionId === correctAnswer) {
+        return (
+          <span className={`${styles.answerStatus} ${styles.correct}`}>
+            Correct Answer
+          </span>
+        );
+      }
+
+      if (optionId === userAnswer && userAnswer !== correctAnswer) {
+        return (
+          <span className={`${styles.answerStatus} ${styles.incorrect}`}>
+            Your Answer
+          </span>
+        );
+      }
+
+      return null;
+    },
+    [info?.reviewAnswers, info?.answers]
+  );
+
   return (
     <>
-      <div className={styles.timeDetailsContainer}>
-        <div className={styles.timerContainer}>
-          <Image src={hourglass} /> Time left:
-          <div className={styles.timer}>
-            <span>{String(timer.minutes).padStart(2, "0")}</span>
-            <span>:</span>
-            <span>{String(timer.seconds).padStart(2, "0")}</span>
+      <div
+        className={styles.timeDetailsContainer}
+        style={{ justifyContent: info?.reviewAnswers ? "flex-end" : "" }}
+      >
+        {!info?.reviewAnswers && (
+          <div className={styles.timerContainer}>
+            <Image src={hourglass} /> Time left:
+            <div className={styles.timer}>
+              <span>{String(timer.minutes).padStart(2, "0")}</span>
+              <span>:</span>
+              <span>{String(timer.seconds).padStart(2, "0")}</span>
+            </div>
           </div>
-        </div>
-        <button onClick={handleFinitTestClick} className={styles.finishButton}>
-          Finish Test
-        </button>
+        )}
+        {!info?.reviewAnswers ? (
+          <button
+            onClick={handleFinitTestClick}
+            className={styles.finishButton}
+          >
+            Finish Test
+          </button>
+        ) : (
+          <button
+            onClick={handleFinitTestClick}
+            className={styles.finishButton}
+          >
+            Go Back
+          </button>
+        )}
       </div>
       <div className={styles.questionParentContainer}>
         {info?.questions?.map((ele, index) => (
@@ -278,33 +353,48 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
             <h2 className={styles.questionText}>{ele?.question || ""}</h2>
 
             <div className={styles.optionsContainer}>
-              {ele?.options?.map((option) => (
-                <label
-                  key={option.id}
-                  className={`${styles.optionItem} ${
-                    info?.answers?.[ele?.id] === option.id
-                      ? styles.selected
-                      : ""
-                  }`}
-                >
-                  <div className={styles.radioContainer}>
-                    <input
-                      type="radio"
-                      name={`question_${ele.id}`}
-                      value={option.id}
-                      checked={info?.answers?.[ele?.id] === option.id}
-                      onChange={() => handleOptionSelect(option.id, ele)}
-                    />
-                    <div className={styles.radioCustom} />
-                  </div>
-                  <span>
-                    {option.id}) {option.text}
-                  </span>
-                </label>
-              ))}
+              {ele?.options?.map((option) => {
+                const status = getOptionStatus(ele, option.id);
+                return (
+                  <label
+                    key={option.id}
+                    className={`${styles.optionItem} ${
+                      info?.answers?.[ele?.id] === option.id
+                        ? styles.selected
+                        : ""
+                    } ${styles[status]} ${
+                      info?.reviewAnswers ? styles.disabled : ""
+                    }`}
+                  >
+                    <div className={styles.radioContainer}>
+                      <input
+                        type="radio"
+                        name={`question_${ele.id}`}
+                        value={option.id}
+                        checked={info?.answers?.[ele?.id] === option.id}
+                        onChange={() => handleOptionSelect(option.id, ele)}
+                        disabled={info?.reviewAnswers}
+                      />
+                      <div className={styles.radioCustom} />
+                    </div>
+                    <span>
+                      {option.id}) {option.text}
+                    </span>
+                    {getAnswerStatusText(ele, option.id)}
+                  </label>
+                );
+              })}
             </div>
 
-            <button className={styles.dontKnowButton}>Don't know?</button>
+            {!info?.answers?.[ele?.id] && info?.reviewAnswers && (
+              <div className={`${styles.answerStatus} ${styles.unmarked}`}>
+                Question Unmarked
+              </div>
+            )}
+
+            {!info?.reviewAnswers && (
+              <button className={styles.dontKnowButton}>Don't know?</button>
+            )}
           </div>
         ))}
       </div>
