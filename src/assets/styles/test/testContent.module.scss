@@ -350,6 +350,12 @@
           vertical-align: middle;
           text-transform: capitalize;
         }
+        .chatContainer {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 10px;
+        }
 
         .score {
           color: #45505e;
@@ -413,73 +419,73 @@
           }
         }
 
-        .chartContainer {
-          display: flex;
-          flex-direction: column;
-          gap: 16px;
-          margin-top: 16px;
+        // .chartContainer {
+        //   display: flex;
+        //   flex-direction: column;
+        //   gap: 16px;
+        //   margin-top: 16px;
 
-          .progressChart {
-            width: 120px;
-            height: 120px;
-            margin: 0 auto;
-          }
+        //   .progressChart {
+        //     width: 120px;
+        //     height: 120px;
+        //     margin: 0 auto;
+        //   }
 
-          .statsLegend {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-top: 8px;
+        //   .statsLegend {
+        //     display: flex;
+        //     flex-direction: column;
+        //     gap: 12px;
+        //     margin-top: 8px;
 
-            .statItem {
-              display: flex;
-              align-items: center;
-              justify-content: space-between;
+        //     .statItem {
+        //       display: flex;
+        //       align-items: center;
+        //       justify-content: space-between;
 
-              .label {
-                display: flex;
-                align-items: center;
-                gap: 8px;
-                font-size: 14px;
+        //       .label {
+        //         display: flex;
+        //         align-items: center;
+        //         gap: 8px;
+        //         font-size: 14px;
 
-                &.correct {
-                  color: #4caf50;
-                }
+        //         &.correct {
+        //           color: #4caf50;
+        //         }
 
-                &.incorrect {
-                  color: #ff5722;
-                }
+        //         &.incorrect {
+        //           color: #ff5722;
+        //         }
 
-                &.unmarked {
-                  color: #ffc107;
-                }
+        //         &.unmarked {
+        //           color: #ffc107;
+        //         }
 
-                .dot {
-                  width: 8px;
-                  height: 8px;
-                  border-radius: 50%;
+        //         .dot {
+        //           width: 8px;
+        //           height: 8px;
+        //           border-radius: 50%;
 
-                  &.correct {
-                    background-color: #4caf50;
-                  }
+        //           &.correct {
+        //             background-color: #4caf50;
+        //           }
 
-                  &.incorrect {
-                    background-color: #ff5722;
-                  }
+        //           &.incorrect {
+        //             background-color: #ff5722;
+        //           }
 
-                  &.unmarked {
-                    background-color: #ffc107;
-                  }
-                }
-              }
+        //           &.unmarked {
+        //             background-color: #ffc107;
+        //           }
+        //         }
+        //       }
 
-              .value {
-                font-weight: 500;
-                color: #212427;
-              }
-            }
-          }
-        }
+        //       .value {
+        //         font-weight: 500;
+        //         color: #212427;
+        //       }
+        //     }
+        //   }
+        // }
       }
     }
 

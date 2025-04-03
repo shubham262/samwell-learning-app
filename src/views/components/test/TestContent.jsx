@@ -9,6 +9,14 @@ import questionMark from "../../../assets/svg/test/questionMark.svg";
 import rightArrow from "../../../assets/svg/test/right-arrow.svg";
 import questionData from "../../../constants/data";
 import { useRouter } from "next/navigation";
+import { PieChart, Pie, Cell } from "recharts";
+const data = [
+  { name: "Group A", value: 400 },
+  { name: "Group B", value: 300 },
+  { name: "Group C", value: 300 },
+  { name: "Group D", value: 200 },
+];
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
 
 const TestContent = () => {
   const [info, setInfo] = useState({
@@ -50,12 +58,6 @@ const TestContent = () => {
         if (!answers?.[questionData?.[i]?.id]) {
           unmarkedQuestions++;
         }
-
-        if (
-          questionData?.[i]?.correctOption !== answers?.[questionData?.[i]?.id]
-        ) {
-          wrongAnswers++;
-        }
       }
       scorePercentage = (currentScore / questionData?.length) * 100;
       setInfo((prev) => ({
@@ -63,7 +65,6 @@ const TestContent = () => {
         score: currentScore,
         scorePercentage,
         unmarkedQuestions,
-        wrongAnswers,
       }));
     }
   }, [info?.activeStage]);
@@ -119,7 +120,6 @@ const TestContent = () => {
       score: 0,
       scorePercentage: 0,
       unmarkedQuestions: 0,
-      wrongAnswers: 0,
     }));
   }, [info]);
 
@@ -361,18 +361,19 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
     router.push("/");
   }, [router]);
 
-  const stats = {
-    score: 40,
-    correct: 4,
-    incorrect: 6,
-    avgTime: "4 mins",
-    longestQuestions: ["Q. 6", "Q. 8"],
-    timeCompleted: {
-      hours: "00",
-      minutes: "18",
-      seconds: "54",
-    },
-  };
+  // Calculate the actual data for the pie chart
+  const totalQuestions = info?.questions?.length || 0;
+  const correctAnswers = info?.score || 0;
+  const incorrectAnswers =
+    totalQuestions - correctAnswers - (info?.unmarkedQuestions || 0);
+
+  const chartData = [
+    { name: "Correct", value: correctAnswers },
+    { name: "Incorrect", value: incorrectAnswers },
+    { name: "Unmarked", value: info?.unmarkedQuestions || 0 },
+  ];
+
+  const COLORS = ["#4CAF50", "#FF5722", "#FFC107"];
 
   return (
     <div className={styles.stage2ParentContainer}>
@@ -389,7 +390,36 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
       <div className={styles.contentGrid}>
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Quiz Score</h2>
-          <div className={styles.score}>{info?.scorePercentage}%</div>
+          <div className={styles.score}>
+            {Math.round(info?.scorePercentage)}%
+          </div>
+
+          <div className={styles.chatContainer}>
+            <PieChart
+              width={120}
+              height={120}
+              className={"customPieChatStyling"}
+            >
+              <Pie
+                data={chartData}
+                cx={60}
+                cy={60}
+                innerRadius={25}
+                outerRadius={35}
+                fill="#8884d8"
+                paddingAngle={5}
+                dataKey="value"
+              >
+                {chartData.map((entry, index) => (
+                  <Cell
+                    key={`cell-${index}`}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
+            </PieChart>
+            <span>hello</span>
+          </div>
         </div>
 
         <div className={styles.section}>

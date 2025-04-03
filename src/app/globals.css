@@ -12,3 +12,6 @@ body {
 }
 
 
+.customPieChatStyling {
+  transform: translateX(-30px);
+}
