@@ -59,24 +59,20 @@ const questionData = [
 ];
 
 const TestContent = () => {
-  const [selectedOption, setSelectedOption] = useState({});
   const [info, setInfo] = useState({
     answers: {},
     questions: questionData || [],
   });
 
-  const handleOptionSelect = useCallback(
-    (selectedOptiondata, questionInfo) => {
-      setInfo((prev) => ({
-        ...prev,
-        answers: {
-          ...prev.answers,
-          [questionInfo?.id]: selectedOptiondata,
-        },
-      }));
-    },
-    [info]
-  );
+  const handleOptionSelect = useCallback((selectedOptiondata, questionInfo) => {
+    setInfo((prev) => ({
+      ...prev,
+      answers: {
+        ...prev.answers,
+        [questionInfo?.id]: selectedOptiondata,
+      },
+    }));
+  }, []);
 
   console.log("answers", info?.answers);
 
@@ -115,9 +111,9 @@ const TestContent = () => {
                   <div className={styles.radioContainer}>
                     <input
                       type="radio"
-                      name="cellPowerhouse"
+                      name={`question_${ele.id}`}
                       value={option.id}
-                      //   checked={info?.answers?.[ele?.id] === option.id}
+                      checked={info?.answers?.[ele?.id] === option.id}
                       onChange={() => handleOptionSelect(option.id, ele)}
                     />
                     <div className={styles.radioCustom} />
