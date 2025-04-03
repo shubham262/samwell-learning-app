@@ -7,64 +7,7 @@ import Image from "next/image";
 import hourglass from "../../../assets/svg/test/hourglass.svg";
 import questionMark from "../../../assets/svg/test/questionMark.svg";
 import rightArrow from "../../../assets/svg/test/right-arrow.svg";
-
-const questionData = [
-  {
-    id: 1,
-    question: "What Is The Powerhouse Of The Cell?",
-    options: [
-      { id: "A", text: "Nucleus" },
-      { id: "B", text: "Ribosome" },
-      { id: "C", text: "Mitochondria" },
-      { id: "D", text: "Golgi Apparatus" },
-    ],
-    correctOption: "C",
-  },
-  {
-    id: 2,
-    question: "What Is The Powerhouse Of The Cell?",
-    options: [
-      { id: "A", text: "Nucleus" },
-      { id: "B", text: "Ribosome" },
-      { id: "C", text: "Mitochondria" },
-      { id: "D", text: "Golgi Apparatus" },
-    ],
-    correctOption: "C",
-  },
-  {
-    id: 3,
-    question: "What Is The Powerhouse Of The Cell?",
-    options: [
-      { id: "A", text: "Nucleus" },
-      { id: "B", text: "Ribosome" },
-      { id: "C", text: "Mitochondria" },
-      { id: "D", text: "Golgi Apparatus" },
-    ],
-    correctOption: "C",
-  },
-  {
-    id: 4,
-    question: "What Is The Powerhouse Of The Cell?",
-    options: [
-      { id: "A", text: "Nucleus" },
-      { id: "B", text: "Ribosome" },
-      { id: "C", text: "Mitochondria" },
-      { id: "D", text: "Golgi Apparatus" },
-    ],
-    correctOption: "C",
-  },
-  {
-    id: 5,
-    question: "What Is The Powerhouse Of The Cell?",
-    options: [
-      { id: "A", text: "Nucleus" },
-      { id: "B", text: "Ribosome" },
-      { id: "C", text: "Mitochondria" },
-      { id: "D", text: "Golgi Apparatus" },
-    ],
-    correctOption: "C",
-  },
-];
+import questionData from "../../../constants/data";
 
 const TestContent = () => {
   const [info, setInfo] = useState({
@@ -218,8 +161,6 @@ const TestContent = () => {
     </div>
   );
 };
-
-export default memo(TestContent);
 
 const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
   const [timer, setTimer] = useState({
@@ -481,3 +422,5 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
     </div>
   );
 };
+
+export default memo(TestContent);
