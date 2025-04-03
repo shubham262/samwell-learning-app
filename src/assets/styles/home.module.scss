@@ -9,9 +9,9 @@
     display: flex;
     flex: 1;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
     flex-direction: column;
-
+    padding: 20px;
     .supprtingText {
       font-family: Inter;
       font-weight: 300;
@@ -20,6 +20,69 @@
       letter-spacing: 0%;
       text-align: center;
       color: #45505e;
+    }
+
+    .tutorContainer {
+      width: 100%;
+      max-width: 800px;
+      background: #ffffff;
+      border-radius: 16px;
+      box-shadow: 0px 4px 20px rgba(0, 0, 0, 0.05);
+      padding: 24px;
+
+      .tutorHeader {
+        margin-bottom: 24px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .tutorTitle {
+          font-family: Inter;
+          font-weight: 500;
+          font-size: 12px;
+          leading-trim: Cap height;
+          line-height: 100%;
+          letter-spacing: 0%;
+          vertical-align: middle;
+          color: #45505e;
+        }
+      }
+
+      .studyInput {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+
+        textarea {
+          width: 100%;
+          min-height: 120px;
+          padding: 16px;
+          border: 1px solid #e6e8ec;
+          border-radius: 8px;
+          font-size: 16px;
+          resize: vertical;
+
+          &::placeholder {
+            color: #9a9fa5;
+          }
+        }
+
+        .startButton {
+          align-self: flex-end;
+          padding: 12px 24px;
+          background: #2a76f6;
+          color: white;
+          border: none;
+          border-radius: 80px;
+          font-weight: 600;
+          cursor: pointer;
+          transition: background 0.2s;
+
+          &:hover {
+            background: #3563d8;
+          }
+        }
+      }
     }
   }
 }
