@@ -1,5 +1,12 @@
 "use client";
-import { memo, useState, useCallback, useEffect, useMemo } from "react";
+import {
+  memo,
+  useState,
+  useCallback,
+  useEffect,
+  useMemo,
+  useContext,
+} from "react";
 import styles from "../../../assets/styles/test/testContent.module.scss";
 import bullseye from "../../../assets/icons/bullseye.png";
 import user from "../../../assets/icons/user.png";
@@ -7,21 +14,18 @@ import Image from "next/image";
 import hourglass from "../../../assets/svg/test/hourglass.svg";
 import questionMark from "../../../assets/svg/test/questionMark.svg";
 import rightArrow from "../../../assets/svg/test/right-arrow.svg";
-import questionData from "../../../constants/data";
+// import questionData from "../../../constants/data";
 import { useRouter } from "next/navigation";
 import { PieChart, Pie, Cell } from "recharts";
-const data = [
-  { name: "Group A", value: 400 },
-  { name: "Group B", value: 300 },
-  { name: "Group C", value: 300 },
-  { name: "Group D", value: 200 },
-];
-const COLORS = ["#4CAF50", "#FF5722", "#FFC107"];
+import Context from "@/context/context";
 
 const TestContent = () => {
+  const {
+    tutorInfo: { questionsData },
+  } = useContext(Context);
   const [info, setInfo] = useState({
     answers: {},
-    questions: questionData || [],
+    questions: [],
     activeStage: "stage1", //stage1,stage2
     score: 0,
     scorePercentage: 0,
@@ -34,13 +38,19 @@ const TestContent = () => {
       seconds: "00",
     },
   });
+  // useEffect(() => {
+  //   setInfo((prev) => ({ ...prev, answers }));
+  // }, []);
+
   useEffect(() => {
-    let answers = {};
-    for (const question of info?.questions) {
-      answers[question?.id] = null;
+    if (questionsData) {
+      let answers = {};
+      for (const question of questionsData) {
+        answers[question?.id] = null;
+      }
+      setInfo((prev) => ({ ...prev, answers, questions: questionsData }));
     }
-    setInfo((prev) => ({ ...prev, answers }));
-  }, []);
+  }, [questionsData]);
 
   useEffect(() => {
     if (info?.activeStage === "stage2") {
@@ -49,17 +59,18 @@ const TestContent = () => {
       let scorePercentage = 0;
       let wrongAnswers = 0;
       const answers = info?.answers || {};
-      for (let i = 0; i < questionData?.length; i++) {
+      for (let i = 0; i < questionsData?.length; i++) {
         if (
-          questionData?.[i]?.correctOption === answers?.[questionData?.[i]?.id]
+          questionsData?.[i]?.correctOption ===
+          answers?.[questionsData?.[i]?.id]
         ) {
           currentScore += 1;
         }
-        if (!answers?.[questionData?.[i]?.id]) {
+        if (!answers?.[questionsData?.[i]?.id]) {
           unmarkedQuestions++;
         }
       }
-      scorePercentage = (currentScore / questionData?.length) * 100;
+      scorePercentage = (currentScore / questionsData?.length) * 100;
       setInfo((prev) => ({
         ...prev,
         score: currentScore,
@@ -67,7 +78,7 @@ const TestContent = () => {
         unmarkedQuestions,
       }));
     }
-  }, [info?.activeStage]);
+  }, [info?.activeStage, questionsData]);
 
   const handleOptionSelect = useCallback((selectedOptiondata, questionInfo) => {
     setInfo((prev) => ({
@@ -120,6 +131,7 @@ const TestContent = () => {
       score: 0,
       scorePercentage: 0,
       unmarkedQuestions: 0,
+      reviewAnswers: false,
     }));
   }, [info]);
 
@@ -271,7 +283,7 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
       >
         {!info?.reviewAnswers && (
           <div className={styles.timerContainer}>
-            <Image src={hourglass} /> Time left:
+            <Image src={hourglass} alt="target" /> Time left:
             <div className={styles.timer}>
               <span>{String(timer.minutes).padStart(2, "0")}</span>
               <span>:</span>
@@ -297,9 +309,10 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
       </div>
       <div className={styles.questionParentContainer}>
         {info?.questions?.map((ele, index) => (
+          //quaestionComponent
           <div className={styles.questionContainer} key={ele.id}>
             <span className={styles.questionNumber}>
-              <Image src={questionMark} /> Question {index + 1} of{" "}
+              <Image src={questionMark} alt="target" /> Question {index + 1} of{" "}
               {info?.questions?.length}
             </span>
             <h2 className={styles.questionText}>{ele?.question || ""}</h2>
@@ -377,14 +390,6 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
 
   return (
     <div className={styles.stage2ParentContainer}>
-      {/* <div className={styles.breadcrumb}>
-        <span>Module 3</span>
-        <span className={styles.separator}>›</span>
-        <span>Cinematic Context</span>
-        <span className={styles.separator}>›</span>
-        <span>Final Quiz</span>
-      </div> */}
-
       <h1 className={styles.headerText}>Don't worry, you'll bounce back!</h1>
 
       <div className={styles.contentGrid}>
@@ -458,7 +463,7 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
           <div className={styles.actionLink} onClick={handleTryAgain}>
             <div className={styles.linkContent}>
               <span className={styles.linkTitle}>
-                Try Again <Image src={rightArrow} />
+                Try Again <Image src={rightArrow} alt="target" />
               </span>
               <span className={styles.linkDescription}>
                 Retake the test to improve your score.
@@ -476,7 +481,7 @@ const Stage2 = ({ info, handleTryAgain, handleReviewAnswers }) => {
                 {info?.unmarkedQuestions} Missed item
               </div>
               <span className={styles.linkTitle}>
-                Review your answer <Image src={rightArrow} />
+                Review your answer <Image src={rightArrow} alt="target" />
               </span>
               <span className={styles.linkDescription}>
                 Go over your answers and get instant AI feedback.

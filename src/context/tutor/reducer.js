@@ -1,10 +1,14 @@
 import { message } from "antd";
 import { intialState } from "./state";
 const actionHandlers = {
-  //   GET_WORKFLOW_DETAILS_SUCCESS: (state, action) => ({
-  //     ...state,
-  //     [action?.selectedvariable]: action?.payload,
-  //   }),
+  FETCH_QUESTIONS_SUCCESS: (state, action) => ({
+    ...state,
+    ...action?.payload,
+  }),
+  UPDATE_STATE_VALUE: (state, action) => ({
+    ...state,
+    ...action?.payload,
+  }),
 
   RESET_STATE: () => intialState,
 };

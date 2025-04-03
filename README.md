@@ -1,22 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Learning App
+
+A Next.js application that helps users learn through AI-generated multiple-choice questions.
+
+## Environment Setup
+
+1. Create a `.env.local` file in the root directory of the project
+2. Add your Google API key to the file:
+   ```
+   NEXT_PUBLIC_GOOGLE_API_KEY=your_google_api_key_here
+   ```
+3. Replace `your_google_api_key_here` with your actual Google API key
 
 ## Getting Started
 
-First, run the development server:
+1. Install dependencies:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+   ```
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Run the development server:
 
-You can start editing the page by modifying `app/page.js`. The page auto-updates as you edit the file.
+   ```
+   npm run dev
+   ```
+
+3. Open [http://localhost:3000](http://localhost:3000) in your browser to see the application.
+
+## Important Notes
+
+- The `.env.local` file is automatically ignored by Git to keep your API keys secure
+- Never commit your actual API keys to version control
+- For production deployment, set the environment variables in your hosting platform's configuration
 
 This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
