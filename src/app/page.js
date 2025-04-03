@@ -19,6 +19,7 @@ const Home = () => {
   const [info, setInfo] = useState({
     userQuery: "",
     loader: false,
+    error: false,
   });
 
   //clearing state on mounting
@@ -31,7 +32,7 @@ const Home = () => {
 
   const onQueryChange = useCallback(
     (e) => {
-      setInfo((prev) => ({ ...prev, userQuery: e.target.value }));
+      setInfo((prev) => ({ ...prev, userQuery: e.target.value, error: false }));
     },
     [info]
   );
@@ -46,7 +47,7 @@ const Home = () => {
           return;
         }
         if (!info?.userQuery?.length) {
-          return message.error("Please enter a valid query");
+          return setInfo((prev) => ({ ...prev, error: true }));
         }
         setInfo((prev) => ({ ...prev, loader: true, userQuery: "" }));
 
@@ -74,7 +75,7 @@ const Home = () => {
         </span>
         <div className={styles.tutorContainer}>
           <div className={styles.tutorHeader}>
-            <Image src={book} alt="book" alt="target" />
+            <Image src={book} alt="book" />
             <span className={styles.tutorTitle}>AI tutor</span>
           </div>
           <div className={styles.studyInput}>
@@ -83,19 +84,32 @@ const Home = () => {
               onChange={onQueryChange}
               value={info.userQuery}
               onKeyDown={handleNavigateToTest}
+              style={{ borderColor: info?.error ? "red" : "" }}
             />
-            <button
-              className={styles.startButton}
-              onClick={() => handleNavigateToTest(null, true)}
+            <div
+              className={styles.errorContainer}
+              style={{
+                justifyContent: info?.error ? "space-between" : "flex-end",
+              }}
             >
-              {info?.loader ? (
-                <span className={styles.loaderText}>
-                  <Spin /> Fetching Questions...
+              {info?.error && (
+                <span className={styles.errorTest}>
+                  User Quey Cannot be empty
                 </span>
-              ) : (
-                "Start Studying"
               )}
-            </button>
+              <button
+                className={styles.startButton}
+                onClick={() => handleNavigateToTest(null, true)}
+              >
+                {info?.loader ? (
+                  <span className={styles.loaderText}>
+                    <Spin /> Fetching Questions...
+                  </span>
+                ) : (
+                  "Start Studying"
+                )}
+              </button>
+            </div>
           </div>
         </div>
       </div>

@@ -66,6 +66,17 @@
             color: #9a9fa5;
           }
         }
+        .errorContainer {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          .errorTest {
+            color: red;
+            font-size: 12px;
+            font-family: Inter;
+            font-weight: 400;
+          }
+        }
 
         .startButton {
           align-self: flex-end;

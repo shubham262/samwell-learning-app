@@ -12,11 +12,6 @@ const Test = () => {
     tutorInfo: { questionsData },
   } = useContext(Context);
 
-  useEffect(() => {
-    if (!questionsData) {
-      router.push("/");
-    }
-  }, [questionsData]);
   return (
     <div className={styles.testParentContainer}>
       <Sidebar />
