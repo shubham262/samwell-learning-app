@@ -367,25 +367,45 @@
           gap: 4px;
 
           .linkTitle {
-            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+
+            font-family: Inter;
+            font-weight: 700;
             font-size: 16px;
+            leading-trim: Cap height;
+            line-height: 19px;
+            letter-spacing: 0px;
+            vertical-align: middle;
+            color: #45505e;
           }
 
           .linkDescription {
-            color: #666;
+            color: #454545;
+            font-family: Inter;
+            font-weight: 400;
             font-size: 14px;
+            line-height: 24px;
+            letter-spacing: 0px;
           }
         }
 
         .warningBadge {
+          width: fit-content;
           display: flex;
           align-items: center;
           gap: 8px;
-          color: #ff5722;
+          color: #992900;
           font-size: 14px;
           padding: 4px 8px;
           border-radius: 4px;
-          background: #fff3f0;
+          background: #ffe7c2;
+          font-family: Inter;
+          font-weight: 600;
+          font-size: 12px;
+          line-height: 15px;
+          letter-spacing: 0%;
         }
       }
     }

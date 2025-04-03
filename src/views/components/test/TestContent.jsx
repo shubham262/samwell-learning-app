@@ -6,9 +6,7 @@ import user from "../../../assets/icons/user.png";
 import Image from "next/image";
 import hourglass from "../../../assets/svg/test/hourglass.svg";
 import questionMark from "../../../assets/svg/test/questionMark.svg";
-// import { IoWarningOutline } from "react-icons/io5";
-// import { IoTimeOutline } from "react-icons/io5";
-// import { IoChevronForward } from "react-icons/io5";
+import rightArrow from "../../../assets/svg/test/right-arrow.svg";
 
 const questionData = [
   {
@@ -256,22 +254,26 @@ const Stage2 = () => {
         <div className={styles.rightSection}>
           <a href="#" className={styles.actionLink}>
             <div className={styles.linkContent}>
-              <span className={styles.linkTitle}>Try Again</span>
+              <span className={styles.linkTitle}>
+                Try Again <Image src={rightArrow} />
+              </span>
               <span className={styles.linkDescription}>
                 Retake the test to improve your score.
               </span>
             </div>
-            <span>›</span>
+            {/* <span>›</span> */}
           </a>
 
           <a href="#" className={styles.actionLink}>
             <div className={styles.linkContent}>
-              <span className={styles.linkTitle}>Review your answer</span>
+              <div className={styles.warningBadge}>6 Missed item</div>
+              <span className={styles.linkTitle}>
+                Review your answer <Image src={rightArrow} />
+              </span>
               <span className={styles.linkDescription}>
                 Go over your answers and get instant AI feedback.
               </span>
             </div>
-            <div className={styles.warningBadge}>6 Missed item</div>
           </a>
         </div>
       </div>
