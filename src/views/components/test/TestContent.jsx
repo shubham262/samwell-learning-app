@@ -18,6 +18,7 @@ const questionData = [
       { id: "C", text: "Mitochondria" },
       { id: "D", text: "Golgi Apparatus" },
     ],
+    correctOption: "C",
   },
   {
     id: 2,
@@ -28,6 +29,7 @@ const questionData = [
       { id: "C", text: "Mitochondria" },
       { id: "D", text: "Golgi Apparatus" },
     ],
+    correctOption: "C",
   },
   {
     id: 3,
@@ -38,6 +40,7 @@ const questionData = [
       { id: "C", text: "Mitochondria" },
       { id: "D", text: "Golgi Apparatus" },
     ],
+    correctOption: "C",
   },
   {
     id: 4,
@@ -48,6 +51,7 @@ const questionData = [
       { id: "C", text: "Mitochondria" },
       { id: "D", text: "Golgi Apparatus" },
     ],
+    correctOption: "C",
   },
   {
     id: 5,
@@ -58,6 +62,7 @@ const questionData = [
       { id: "C", text: "Mitochondria" },
       { id: "D", text: "Golgi Apparatus" },
     ],
+    correctOption: "C",
   },
 ];
 
@@ -66,7 +71,49 @@ const TestContent = () => {
     answers: {},
     questions: questionData || [],
     activeStage: "stage1", //stage1,stage2
+    score: 0,
+    scorePercentage: 0,
+    unmarkedQuestions: 0,
+    reviewQuestions: false,
+    usedTime: {
+      hours: "00",
+      minutes: "00",
+      seconds: "00",
+    },
   });
+  useEffect(() => {
+    let answers = {};
+    for (const question of info?.questions) {
+      answers[question?.id] = null;
+    }
+    setInfo((prev) => ({ ...prev, answers }));
+  }, []);
+
+  useEffect(() => {
+    if (info?.activeStage === "stage2") {
+      let currentScore = 0;
+      let unmarkedQuestions = 0;
+      let scorePercentage = 0;
+      const answers = info?.answers || {};
+      for (let i = 0; i < questionData?.length; i++) {
+        if (
+          questionData?.[i]?.correctOption === answers?.[questionData?.[i]?.id]
+        ) {
+          currentScore += 1;
+        }
+        if (!answers?.[questionData?.[i]?.id]) {
+          unmarkedQuestions++;
+        }
+      }
+      scorePercentage = (currentScore / questionData?.length) * 100;
+      setInfo((prev) => ({
+        ...prev,
+        score: currentScore,
+        scorePercentage,
+        unmarkedQuestions,
+      }));
+    }
+  }, [info?.activeStage]);
 
   const handleOptionSelect = useCallback((selectedOptiondata, questionInfo) => {
     setInfo((prev) => ({
@@ -78,8 +125,46 @@ const TestContent = () => {
     }));
   }, []);
 
-  const handleFinishTest = useCallback(() => {
-    setInfo((prev) => ({ ...prev, activeStage: "stage2" }));
+  const handleFinishTest = useCallback((timeDetails) => {
+    // Calculate used time
+
+    console.log("timeDetails", timeDetails);
+    const initialTimeInSeconds = 15 * 60; // 15 minutes in seconds
+    const remainingTimeInSeconds =
+      timeDetails.minutes * 60 + timeDetails.seconds;
+    const usedTimeInSeconds = initialTimeInSeconds - remainingTimeInSeconds;
+
+    // Convert used time to hours, minutes, seconds
+    const hours = Math.floor(usedTimeInSeconds / 3600);
+    const minutes = Math.floor((usedTimeInSeconds % 3600) / 60);
+    const seconds = usedTimeInSeconds % 60;
+
+    const usedTime = {
+      hours: String(hours).padStart(2, "0"),
+      minutes: String(minutes).padStart(2, "0"),
+      seconds: String(seconds).padStart(2, "0"),
+    };
+
+    setInfo((prev) => ({
+      ...prev,
+      activeStage: "stage2",
+      usedTime,
+    }));
+  }, []);
+
+  const tryAgain = useCallback(() => {
+    let answers = {};
+    for (const question of info?.questions) {
+      answers[question?.id] = null;
+    }
+    setInfo((prev) => ({
+      ...prev,
+      answers,
+      activeStage: "stage1",
+      score: 0,
+      scorePercentage: 0,
+      unmarkedQuestions: 0,
+    }));
   }, [info]);
 
   const stageMapper = useMemo(() => {
@@ -91,9 +176,9 @@ const TestContent = () => {
           handleFinishTest={handleFinishTest}
         />
       ),
-      stage2: <Stage2 />,
+      stage2: <Stage2 info={info} handleTryAgain={tryAgain} />,
     };
-  }, [info, handleFinishTest, handleOptionSelect]);
+  }, [info, handleFinishTest, handleOptionSelect, tryAgain]);
 
   return (
     <div className={styles.testContentParentContainer}>
@@ -116,9 +201,13 @@ export default memo(TestContent);
 
 const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
   const [timer, setTimer] = useState({
-    minutes: 15,
+    minutes: 1,
     seconds: 0,
   });
+
+  const handleFinitTestClick = useCallback(() => {
+    handleFinishTest(timer);
+  }, [handleFinishTest]);
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -126,6 +215,7 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
         if (prev.minutes === 0 && prev.seconds === 0) {
           clearInterval(interval);
           // Handle timer completion (e.g., auto-submit)
+          handleFinishTest({ minutes: 0, seconds: 0 });
           return prev;
         }
 
@@ -156,7 +246,7 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
             <span>{String(timer.seconds).padStart(2, "0")}</span>
           </div>
         </div>
-        <button onClick={handleFinishTest} className={styles.finishButton}>
+        <button onClick={handleFinitTestClick} className={styles.finishButton}>
           Finish Test
         </button>
       </div>
@@ -204,7 +294,7 @@ const Stage1 = ({ info, handleOptionSelect, handleFinishTest }) => {
   );
 };
 
-const Stage2 = () => {
+const Stage2 = ({ info, handleTryAgain }) => {
   const stats = {
     score: 40,
     correct: 4,
@@ -233,26 +323,22 @@ const Stage2 = () => {
       <div className={styles.contentGrid}>
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Quiz Score</h2>
-          <div className={styles.score}>{stats.score}%</div>
+          <div className={styles.score}>{info?.scorePercentage}%</div>
         </div>
 
         <div className={styles.section}>
           <h2 className={styles.sectionTitle}>Time Completed</h2>
           <div className={styles.timeDisplay}>
-            <span className={styles.timeUnit}>{stats.timeCompleted.hours}</span>
+            <span className={styles.timeUnit}>{info?.usedTime?.hours}</span>
             <span className={styles.separator}>:</span>
-            <span className={styles.timeUnit}>
-              {stats.timeCompleted.minutes}
-            </span>
+            <span className={styles.timeUnit}>{info?.usedTime?.minutes}</span>
             <span className={styles.separator}>:</span>
-            <span className={styles.timeUnit}>
-              {stats.timeCompleted.seconds}
-            </span>
+            <span className={styles.timeUnit}>{info?.usedTime?.seconds}</span>
           </div>
         </div>
 
         <div className={styles.rightSection}>
-          <a href="#" className={styles.actionLink}>
+          <div className={styles.actionLink} onClick={handleTryAgain}>
             <div className={styles.linkContent}>
               <span className={styles.linkTitle}>
                 Try Again <Image src={rightArrow} />
@@ -262,11 +348,13 @@ const Stage2 = () => {
               </span>
             </div>
             {/* <span>›</span> */}
-          </a>
+          </div>
 
-          <a href="#" className={styles.actionLink}>
+          <div className={styles.actionLink}>
             <div className={styles.linkContent}>
-              <div className={styles.warningBadge}>6 Missed item</div>
+              <div className={styles.warningBadge}>
+                {info?.unmarkedQuestions} Missed item
+              </div>
               <span className={styles.linkTitle}>
                 Review your answer <Image src={rightArrow} />
               </span>
@@ -274,7 +362,7 @@ const Stage2 = () => {
                 Go over your answers and get instant AI feedback.
               </span>
             </div>
-          </a>
+          </div>
         </div>
       </div>
 
